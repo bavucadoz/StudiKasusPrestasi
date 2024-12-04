@@ -1,33 +1,33 @@
 import java.util.Scanner;
 
 class Prestasi {
-    String namaMahasiswa;
-    String nimMahasiswa;
-    String jenisPrestasiMahasiswa;
-    String tingkatPrestasiMahasiswa;
-    int tahunPrestasiMahasiswa;
+    String namaMHS;
+    int nimMHS;
+    String jenisPrestasiMHS;
+    String tingkatPrestasiMHS;
+    int tahunPrestasiMHS;
 
-    public Prestasi(String nama, String nim, String jenis, String tingkat, int tahun) {
-        namaMahasiswa = nama;
-        nimMahasiswa = nim;
-        jenisPrestasiMahasiswa = jenis;
-        tingkatPrestasiMahasiswa = tingkat;
-        tahunPrestasiMahasiswa = tahun;
+    public Prestasi(String nama, int nim, String jenis, String tingkat, int tahun) {
+        namaMHS = nama;
+        nimMHS = nim;
+        jenisPrestasiMHS = jenis;
+        tingkatPrestasiMHS = tingkat;
+        tahunPrestasiMHS = tahun;
     }
 
     public void display() {
         System.out.printf("Nama: %s | NIM: %s | Jenis: %s | Tingkat: %s | Tahun: %d\n",
-                namaMahasiswa, nimMahasiswa, jenisPrestasiMahasiswa, tingkatPrestasiMahasiswa, tahunPrestasiMahasiswa);
+                namaMHS, nimMHS, jenisPrestasiMHS, tingkatPrestasiMHS, tahunPrestasiMHS);
     }
 }
 
 public class studiKasusPrestasi {
     static Prestasi[] prestasiArray = new Prestasi[100]; // Kapasitas maksimum 100 data
-    static int jumlahPrestasi = 0; // Untuk melacak jumlah data yang tersimpan
+    static int jmlPrestasi = 0; // Untuk melacak jumlah data yang tersimpan
     static Scanner scanner = new Scanner(System.in);
 
     public static void tambahPrestasi() {
-        if (jumlahPrestasi >= prestasiArray.length) {
+        if (jmlPrestasi >= prestasiArray.length) {
             System.out.println("Data penuh. Tidak dapat menambahkan prestasi baru.");
             return;
         }
@@ -36,7 +36,8 @@ public class studiKasusPrestasi {
         System.out.print("Masukkan Nama Mahasiswa: ");
         String nama = scanner.nextLine();
         System.out.print("Masukkan NIM: ");
-        String nim = scanner.nextLine();
+        int nim = scanner.nextInt();
+        scanner.nextLine();  // Membersihkan buffer
         System.out.print("Masukkan Jenis Prestasi (misal: Juara 1, Juara Harapan, dll): ");
         String jenis = scanner.nextLine();
         
@@ -61,19 +62,19 @@ public class studiKasusPrestasi {
         }
 
         // Tambahkan data ke array
-        prestasiArray[jumlahPrestasi] = new Prestasi(nama, nim, jenis, tingkat, tahun);
-        jumlahPrestasi++;
+        prestasiArray[jmlPrestasi] = new Prestasi(nama, nim, jenis, tingkat, tahun);
+        jmlPrestasi++;
         System.out.println("Prestasi berhasil ditambahkan!\n");
     }
 
     public static void tampilkanPrestasi() {
         System.out.println("\n=== TAMPILKAN SEMUA PRESTASI ===");
-        if (jumlahPrestasi == 0) {
+        if (jmlPrestasi == 0) {
             System.out.println("Belum ada data prestasi.\n");
             return;
         }
 
-        for (int i = 0; i < jumlahPrestasi; i++) {
+        for (int i = 0; i < jmlPrestasi; i++) {
             prestasiArray[i].display();
         }
         System.out.println();
@@ -85,8 +86,8 @@ public class studiKasusPrestasi {
         String jenisCari = scanner.nextLine();
 
         boolean ditemukan = false;
-        for (int i = 0; i < jumlahPrestasi; i++) {
-            if (prestasiArray[i].jenisPrestasiMahasiswa.equalsIgnoreCase(jenisCari)) {
+        for (int i = 0; i < jmlPrestasi; i++) {
+            if (prestasiArray[i].jenisPrestasiMHS.equalsIgnoreCase(jenisCari)) {
                 prestasiArray[i].display();
                 ditemukan = true;
             }
