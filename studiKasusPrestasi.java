@@ -1,28 +1,7 @@
 import java.util.Scanner;
 
-class Prestasi {
-    String namaMHS;
-    int nimMHS;
-    String jenisPrestasiMHS;
-    String tingkatPrestasiMHS;
-    int tahunPrestasiMHS;
-
-    public Prestasi(String nama, int nim, String jenis, String tingkat, int tahun) {
-        namaMHS = nama;
-        nimMHS = nim;
-        jenisPrestasiMHS = jenis;
-        tingkatPrestasiMHS = tingkat;
-        tahunPrestasiMHS = tahun;
-    }
-
-    public void display() {
-        System.out.printf("Nama: %s | NIM: %s | Jenis: %s | Tingkat: %s | Tahun: %d\n",
-                namaMHS, nimMHS, jenisPrestasiMHS, tingkatPrestasiMHS, tahunPrestasiMHS);
-    }
-}
-
 public class studiKasusPrestasi {
-    static Prestasi[] prestasiArray = new Prestasi[100]; // Kapasitas maksimum 100 data
+    static String[][] prestasiArray = new String[100][5]; // Array 2D dengan kapasitas maksimum 100 data (5 kolom)
     static int jmlPrestasi = 0; // Untuk melacak jumlah data yang tersimpan
     static Scanner scanner = new Scanner(System.in);
 
@@ -34,50 +13,47 @@ public class studiKasusPrestasi {
 
         System.out.println("\n=== TAMBAH DATA PRESTASI ===");
         System.out.print("Masukkan Nama Mahasiswa: ");
-        String nama = scanner.nextLine();
+        prestasiArray[jmlPrestasi][0] = scanner.nextLine();
         System.out.print("Masukkan NIM: ");
-        int nim = scanner.nextInt();
-        scanner.nextLine();  // Membersihkan buffer
+        prestasiArray[jmlPrestasi][1] = scanner.nextLine();
         System.out.print("Masukkan Jenis Prestasi (misal: Juara 1, Juara Harapan, dll): ");
-        String jenis = scanner.nextLine();
-        
+        prestasiArray[jmlPrestasi][2] = scanner.nextLine();
+
         System.out.print("Masukkan Tingkat Prestasi (Lokal, Nasional, Internasional): ");
         String tingkat = scanner.nextLine();
+        
+        // Nested if untuk validasi tingkat prestasi
+        if (tingkat.equalsIgnoreCase("Lokal") || tingkat.equalsIgnoreCase("Nasional") || tingkat.equalsIgnoreCase("Internasional")) {
+            prestasiArray[jmlPrestasi][3] = tingkat;
 
-        if (tingkat.equalsIgnoreCase("Lokal") || 
-            tingkat.equalsIgnoreCase("Nasional") || 
-            tingkat.equalsIgnoreCase("Internasional")) {
-            // Input valid
+            System.out.print("Masukkan Tahun Prestasi (2010 - 2024): ");
+            int tahun = scanner.nextInt();
+            scanner.nextLine();  // Membersihkan buffer
+            
+            // Nested if dalam validasi tahun
+            if (tahun >= 2010 && tahun <= 2024) {
+                prestasiArray[jmlPrestasi][4] = String.valueOf(tahun);
+                jmlPrestasi++;
+                System.out.println("Prestasi berhasil ditambahkan!\n");
+            } else {
+                System.out.println("Tahun prestasi tidak valid. Harus antara 2010 dan 2024.");
+            }
         } else {
             System.out.println("Tingkat prestasi tidak valid. Hanya menerima: Lokal, Nasional, atau Internasional.");
-            return;
         }
-
-        System.out.print("Masukkan Tahun Prestasi (2010 - 2024): ");
-        int tahun = scanner.nextInt();
-        scanner.nextLine();  // Membersihkan buffer
-        if (tahun < 2010 || tahun > 2024) {
-            System.out.println("Tahun prestasi tidak valid. Harus antara 2010 dan 2024.");
-            return; //kembali ke menu
-        }
-
-        // Tambahkan data ke array
-        prestasiArray[jmlPrestasi] = new Prestasi(nama, nim, jenis, tingkat, tahun);
-        jmlPrestasi++;
-        System.out.println("Prestasi berhasil ditambahkan!\n");
     }
 
     public static void tampilkanPrestasi() {
         System.out.println("\n=== TAMPILKAN SEMUA PRESTASI ===");
         if (jmlPrestasi == 0) {
             System.out.println("Belum ada data prestasi.\n");
-            return;
+        } else {
+            for (int i = 0; i < jmlPrestasi; i++) {
+                System.out.printf("Nama: %s | NIM: %s | Jenis: %s | Tingkat: %s | Tahun: %s\n",
+                    prestasiArray[i][0], prestasiArray[i][1], prestasiArray[i][2], prestasiArray[i][3], prestasiArray[i][4]);
+            }
+            System.out.println();
         }
-
-        for (int i = 0; i < jmlPrestasi; i++) {
-            prestasiArray[i].display();
-        }
-        System.out.println();
     }
 
     public static void analisisPrestasi() {
@@ -87,8 +63,9 @@ public class studiKasusPrestasi {
 
         boolean ditemukan = false;
         for (int i = 0; i < jmlPrestasi; i++) {
-            if (prestasiArray[i].jenisPrestasiMHS.equalsIgnoreCase(jenisCari)) {
-                prestasiArray[i].display();
+            if (prestasiArray[i][2].equalsIgnoreCase(jenisCari)) {
+                System.out.printf("Nama: %s | NIM: %s | Jenis: %s | Tingkat: %s | Tahun: %s\n",
+                    prestasiArray[i][0], prestasiArray[i][1], prestasiArray[i][2], prestasiArray[i][3], prestasiArray[i][4]);
                 ditemukan = true;
             }
         }
@@ -96,7 +73,6 @@ public class studiKasusPrestasi {
         if (!ditemukan) {
             System.out.println("Tidak ada prestasi dengan jenis '" + jenisCari + "'.\n");
         }
-        System.out.println();
     }
 
     public static void main(String[] args) {
@@ -111,21 +87,20 @@ public class studiKasusPrestasi {
             int pilihan = scanner.nextInt();
             scanner.nextLine();  // Membersihkan buffer
 
-            switch (pilihan) {
-                case 1:
+            // Nested if dalam kontrol menu
+            if (pilihan >= 1 && pilihan <= 4) {
+                if (pilihan == 1) {
                     tambahPrestasi();
-                    break;
-                case 2:
+                } else if (pilihan == 2) {
                     tampilkanPrestasi();
-                    break;
-                case 3:
+                } else if (pilihan == 3) {
                     analisisPrestasi();
-                    break;
-                case 4:
+                } else if (pilihan == 4) {
                     System.out.println("\nProgram selesai. Terima kasih!");
                     return;
-                default:
-                    System.out.println("Pilihan tidak valid. Silakan pilih antara 1-4.\n");
+                }
+            } else {
+                System.out.println("Pilihan tidak valid. Silakan pilih antara 1-4.\n");
             }
         }
     }
