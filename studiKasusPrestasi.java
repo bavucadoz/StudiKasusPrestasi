@@ -79,7 +79,7 @@ public class studiKasusPrestasi {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) { //fungsi Main 
         while (true) {
             System.out.println("=== PENCATATAN PRESTASI MAHASISWA ===");
             System.out.println("1. Tambah Data Prestasi");
