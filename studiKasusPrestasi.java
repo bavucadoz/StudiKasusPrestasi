@@ -109,3 +109,7 @@ public class studiKasusPrestasi {
         }
     }
 }
+/*
+ Fikar Bahrul Santoso (13)
+ Arya Bayu Samodra (7)
+ */
